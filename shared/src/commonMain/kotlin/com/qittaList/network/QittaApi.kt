@@ -17,7 +17,7 @@ class QittaApi {
             })
         }
     }
-    suspend fun getAllLaunches(): List<Article> {
+    suspend fun getArticles(): List<Article> {
         return httpClient.get("https://qiita.com/api/v2/items").body()
     }
 }
