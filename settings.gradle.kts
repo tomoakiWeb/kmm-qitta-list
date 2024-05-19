@@ -1,4 +1,4 @@
-rootProject.name = "KotlinProject"
+rootProject.name = "kmm-qitta-list"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
