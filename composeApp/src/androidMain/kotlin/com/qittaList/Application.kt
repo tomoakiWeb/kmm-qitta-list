@@ -1,4 +1,4 @@
-package com.qittaList
+package com.qittaList.com.qittaList
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext

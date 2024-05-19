@@ -1,4 +1,4 @@
-package com.qittaList
+package com.qittaList.com.qittaList
 
 import com.qittaList.QittaSDK
 import com.qittaList.network.QittaApi
