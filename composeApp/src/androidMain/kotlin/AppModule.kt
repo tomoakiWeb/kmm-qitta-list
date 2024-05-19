@@ -2,6 +2,7 @@ package com.qittaList
 
 import com.qittaList.QittaSDK
 import com.qittaList.network.QittaApi
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 
@@ -12,4 +13,5 @@ val appModule = module {
             api = get()
         )
     }
+    viewModel { ArticleViewModel(sdk = get()) }
 }
