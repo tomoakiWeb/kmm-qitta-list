@@ -1,4 +1,4 @@
-package com.qittaList
+package com.qittaList.com.qittaList
 
 import Article
 import androidx.compose.runtime.State
