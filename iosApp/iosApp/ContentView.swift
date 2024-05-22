@@ -18,6 +18,8 @@ struct ContentView: View {
         case .result(let article):
             return AnyView(List(article) { article in
                 ArticleRow(article: article)
+            }.refreshable {
+                viewModel.loadArticles()
             })
         case .error(let description):
             return AnyView(Text(description).multilineTextAlignment(.center))
