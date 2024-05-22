@@ -2,32 +2,59 @@ import SwiftUI
 import Shared
 
 struct ContentView: View {
-    @State private var showContent = false
-    var body: some View {
-        VStack {
-            Button("Click me!") {
-                withAnimation {
-                    showContent = !showContent
-                }
-            }
+  @ObservedObject private(set) var viewModel: ViewModel
 
-            if showContent {
-                VStack(spacing: 16) {
-                    Image(systemName: "swift")
-                        .font(.system(size: 200))
-                        .foregroundColor(.accentColor)
-                    Text("SwiftUI: \(Greeting().greet())")
+    var body: some View {
+        NavigationView {
+            listView()
+            .navigationBarTitle("記事一覧")
+        }
+    }
+
+    private func listView() -> AnyView {
+        switch viewModel.articles {
+        case .loading:
+            return AnyView(Text("Loading...").multilineTextAlignment(.center))
+        case .result(let article):
+            return AnyView(List(article) { article in
+                ArticleRow(article: article)
+            })
+        case .error(let description):
+            return AnyView(Text(description).multilineTextAlignment(.center))
+        }
+    }
+}
+
+extension ContentView {
+
+    enum LoadableArticles {
+        case loading
+        case result([Article])
+        case error(String)
+    }
+
+    @MainActor
+    class ViewModel: ObservableObject {
+        let helper: KoinHelper = KoinHelper()
+        @Published var articles = LoadableArticles.loading
+
+        init() {
+            self.loadArticles()
+        }
+
+        func loadArticles() {
+            Task {
+                do {
+                    self.articles = .loading
+                    let articles = try await helper.getArticle()
+                    self.articles = .result(articles)
+                } catch {
+                    self.articles = .error(error.localizedDescription)
                 }
-                .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+extension Article: Identifiable { }
+
