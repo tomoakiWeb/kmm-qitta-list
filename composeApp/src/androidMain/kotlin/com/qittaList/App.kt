@@ -19,14 +19,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.compose.AppTheme
 
 @OptIn(
@@ -47,7 +53,7 @@ fun App() {
             topBar = {
                 TopAppBar(title = {
                     Text(
-                        "SpaceX Launches",
+                        "記事一覧",
                         style = MaterialTheme.typography.headlineLarge
                     )
                 })
@@ -75,10 +81,25 @@ fun App() {
                                     text = article.title,
                                     style = MaterialTheme.typography.headlineSmall
                                 )
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = article.user.name
-                                )
+
+                                if (article.user.name.isNotEmpty()) {
+                                    Row(verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.padding(top = 8.dp)
+                                    )
+                                    {
+                                        AsyncImage(
+                                            model = article.user.profileImageUrl,
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(40.dp)
+                                                .clip(CircleShape)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = article.user.name
+                                        )
+                                    }
+                                }
                             }
                             HorizontalDivider()
                         }
